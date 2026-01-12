@@ -80,11 +80,14 @@
 ---
 
 ## 📅 WBS
+이미지<br/>
 [ WBS (프로젝트 진행 일정)](https://docs.google.com/spreadsheets/d/15r640vRfC-G8uQ3YBSAxLdvZtq2MuxxO7RWO78nD-6M/edit?gid=0#gid=0)
 
 ---
 
 ## 🧾 요구사항 명세서
+이미지<br/>
+[ 요구사항 명세서 ](https://docs.google.com/spreadsheets/d/1t-3yzFlvFUKhRYMtjQxSj4t5rjAZPjR0/edit?gid=1080029165#gid=1080029165)
 
 ---
 
@@ -101,7 +104,7 @@
 ---
 
 ## 🏗️ 아키텍처
-
+![이미지](./)
 ---
 
 ## 🗄️ SQL
