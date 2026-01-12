@@ -33,12 +33,12 @@
   </tr>
   
   <tr>
-    <td align="center"><img width="120" alt="김진혁" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F14265040%2Fpexels-photo-14265040.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&type=sc960_832" /></td>
-    <td align="center"><img width="120" alt="박하얀" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F14265040%2Fpexels-photo-14265040.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&type=sc960_832" /></td>    
-    <td align="center"><img width="120" alt="양준석" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F14265040%2Fpexels-photo-14265040.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&type=sc960_832" /></td>   
-    <td align="center"><img width="120" alt="이진" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F14265040%2Fpexels-photo-14265040.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&type=sc960_832" /></td>  
-    <td align="center"><img width="120" alt="한규진" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F14265040%2Fpexels-photo-14265040.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&type=sc960_832" /></td>   
-    <td align="center"><img width="120" alt="황희수" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F14265040%2Fpexels-photo-14265040.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&type=sc960_832" /></td>  
+    <td align="center"><img width="120" alt="김진혁" src="introduce/team/kimjinhyuk.png" /></td>
+    <td align="center"><img width="120" alt="박하얀" src="introduce/team/" /></td>   
+    <td align="center"><img width="120" alt="양준석" src="introduce/team/yangjunseok.webp" /></td>   
+    <td align="center"><img width="120" alt="이진" src="introduce/team/leejin.png" /></td>  
+    <td align="center"><img width="120" alt="한규진" src="introduce/team/hankyujin.png" /></td>   
+    <td align="center"><img width="120" alt="황희수" src="introduce/team/hwangheesu.png" /></td>  
   </tr>
 
   <tr>
