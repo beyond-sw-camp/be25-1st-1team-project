@@ -33,12 +33,12 @@
   </tr>
   
   <tr>
-    <td align="center"><img width="120" alt="김진혁" src="introduce/team/kimjinhyuk.png" /></td>
-    <td align="center"><img width="120" alt="박하얀" src="introduce/team/hayan.png" /></td>   
-    <td align="center"><img width="120" alt="양준석" src="introduce/team/yangjunseok.webp" /></td>   
-    <td align="center"><img width="120" alt="이진" src="introduce/team/leejin.png" /></td>  
-    <td align="center"><img width="120" alt="한규진" src="introduce/team/hankyujin.png" /></td>   
-    <td align="center"><img width="120" alt="황희수" src="introduce/team/hwangheesu.png" /></td>  
+    <td align="center"><img width="120" alt="김진혁" src="introduce/kimjinhyuk.png" /></td>
+    <td align="center"><img width="120" alt="박하얀" src="introduce/hayan.png" /></td>   
+    <td align="center"><img width="120" alt="양준석" src="introduce/yangjunseok.webp" /></td>   
+    <td align="center"><img width="120" alt="이진" src="introduce/leejin.png" /></td>  
+    <td align="center"><img width="120" alt="한규진" src="introduce/hankyujin.png" /></td>   
+    <td align="center"><img width="120" alt="황희수" src="introduce/hwangheesu.png" /></td>  
   </tr>
 
   <tr>
