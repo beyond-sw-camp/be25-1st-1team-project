@@ -324,6 +324,18 @@
        <img src="img/테스트케이스/FR-08-05-4.png" />
     
   </details>
+  
+  <details>
+      <summary>FR-09-01 : 카드사/PG 등록 </summary>
+       <img src="img/테스트케이스/FR-09-01.png" />
+  </details>  
+  
+  <details>
+      <summary>FR-09-02 : 정산 규칙 관리 </summary>
+       <img src="img/테스트케이스/FR-09-02a.png" />
+       <img src="img/테스트케이스/FR-09-02b.png" />
+  </details>  
+  
 </details> 
 
 ---
