@@ -278,7 +278,14 @@
        <img src="img/테스트케이스/FR-06-01b.png" />
        <img src="img/테스트케이스/FR-06-01c.png" />
   </details>  
-  
+
+    <details>
+      <summary>FR-06-02 :  위탁 계좌 자금 갱신 </summary>
+       <img src="img/테스트케이스/FR-06-02a.png" />
+       <img src="img/테스트케이스/FR-06-02b.png" />
+       <img src="img/테스트케이스/FR-06-02c.png" />
+  </details> 
+
   <details>
       <summary>FR-07-01 : 가맹점 계좌 자금 갱신 </summary>
        <img src="img/테스트케이스/FR-07-01-01.png" />
