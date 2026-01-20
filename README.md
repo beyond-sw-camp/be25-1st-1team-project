@@ -107,7 +107,7 @@
 ---
 
 # 3. 📅 WBS
-이미지<br/>
+![](img/WBS.PNG)<br/>
 [ WBS (프로젝트 진행 일정)](https://docs.google.com/spreadsheets/d/1XrcdHR66LJBE2SWYMY66MDVdNAcpkelMdxSjatsnTk0/edit?gid=0#gid=0)
 
 ---
@@ -135,7 +135,7 @@
 
 # 8. 🗃 테이블 명세서
 ![](img/table.PNG)<br/>
-[ 테이블 명세서 ](https://docs.google.com/spreadsheets/d/1Wj7p6dot8gu6le8ozsKvHLV7n0PXZg8Lst7WGr4apt8/edit?gid=993473287#gid=993473287)
+[ 테이블 명세서 ](https://docs.google.com/spreadsheets/d/1HM-mU0-lc_Kd9HSFikO5GXxtWctQNYoIqnbgs6Q8_N0/edit?gid=993473287#gid=993473287)
 
 ---
 
