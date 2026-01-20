@@ -194,7 +194,26 @@
 
 <details>
   <summary>Test Case</summary>
-  
+  <details>
+      <summary>FR-08-01 : PG사 -> 본사 원장 데이터 저장 </summary>
+       <img src="img/테스트케이스/FR-08-01.png" />
+    
+  </details>
+  <details>
+      <summary>FR-08-02 : 본사 - 위탁계좌 원장 데이터 저장 </summary>
+       <img src="img/테스트케이스/FR-08-02.png" />
+    
+  </details>
+  <details>
+      <summary>FR-08-03 : 본사 - 가맹점 원장 데이터 저장 </summary>
+       <img src="img/테스트케이스/FR-08-03.png" />
+    
+  </details>
+  <details>
+      <summary>FR-08-04 : 위탁계좌 - 가맹점 원장 데이터 저장 </summary>
+       <img src="img/테스트케이스/FR-08-04.png" />
+    
+  </details>
   <details>
       <summary>FR-08-05 : 자금흐름 원장 감사</summary>
        <h3>가맹점 기준 전체 자금 흐름 타임라인 감사</h3>
