@@ -2,12 +2,9 @@
 
 
 
-# 👥 flow - 팀원 소개
+# 👥 flow 팀원 소개
 
 <table>
-  <tr> 
-    <th colspan = "6" align = "center"> flow </th> 
-  </tr>
   
   <tr>
     <th>김진혁</th>
@@ -57,14 +54,15 @@
 1. [📚 프로젝트 개요](#1--프로젝트-개요)
 2. [🛠️ 주요 기능](#2-%EF%B8%8F-주요-기능)
 3. [📅 WBS](#3--wbs)
-4. [🧾 요구사항 명세서](#4--요구사항-명세서)
-5. [🧵 유스케이스](#5--유스케이스)
-6. [🧩 ERD](#6--erd)
-7. [📋 테이블 명세서](#7--테이블-명세서)
-8. [🗄️ SQL](#8-%EF%B8%8F-sql)
-9. [⚙️ 프로시저](#9-%EF%B8%8F-프로시저)
-10. [📰 시나리오](#10--시나리오)
-11. [💬 팀회고](#11--팀회고)
+4. [📋 기획서]
+5. [🧾 요구사항 명세서](#4--요구사항-명세서)
+6. [🧵 유스케이스](#5--유스케이스)
+7. [🧩 ERD](#6--erd)
+8. [🗃 테이블 명세서](#7--테이블-명세서)
+9. [🗄️ SQL](#8-%EF%B8%8F-sql)
+10. [⚙️ 프로시저](#9-%EF%B8%8F-프로시저)
+11. [📰 시나리오](#10--시나리오)
+12. [💬 팀회고](#11--팀회고)
 ---
 
 
@@ -109,44 +107,62 @@
 
 ---
 
-# 4. 🧾 요구사항 명세서
+# 4. 📋 기획서
+
+---
+
+# 5. 🧾 요구사항 명세서
 ![](img/requirements.PNG)<br/>
 [ 요구사항 명세서 ](https://docs.google.com/spreadsheets/d/1t-3yzFlvFUKhRYMtjQxSj4t5rjAZPjR0/edit?gid=1080029165#gid=1080029165)
 
 ---
 
-# 5. 🧵 유스케이스
+# 6. 🧵 유스케이스
 확정X)<br/>
 ![](img/usecase.png)
 
 ---
 
-# 6. 🧩 ERD
+# 7. 🧩 ERD
 ![](img/ERD.PNG)
 
 ---
 
-# 7. 📋 테이블 명세서
+# 8. 🗃 테이블 명세서
 ![](img/table.PNG)<br/>
 [ 테이블 명세서 ](https://docs.google.com/spreadsheets/d/1GI8Nhlo6Zvqm3CNvxjKK17xeaG-IVI5IMGtB0OgICOE/edit?gid=993473287#gid=993473287)
 
 ---
 
-# 8. 🗄️ SQL
+# 9. 🗄️ SQL
+
+<details>
+    <summary>DDL</summary>
+  
+</details>
+
+<details>
+    <summary>DML</summary>
+  
+</details>
+
+<details>
+    <summary>Test Case</summary>
+  
+</details>
+---
+
+# 10. ⚙️ 프로시저
 
 ---
 
-# 9. ⚙️ 프로시저
-
----
-
-# 10. 📰 시나리오
+# 11. 📰 시나리오
 확정X)<br/>
 ![](img/flo.png)
 
 ---
 
-# 11. 💬 팀회고
+# 12. 💬 팀회고
 
 #### 🦊김진혁
 > 시도하였던 것
