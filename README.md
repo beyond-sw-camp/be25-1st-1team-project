@@ -129,12 +129,14 @@
 ---
 
 # 7. 🧩 ERD
+이미지 다시 변경
 ![](img/ERD.PNG)
 [ ERD ](https://www.erdcloud.com/d/uzGd5MBTRGSqNebu2)
 
 ---
 
 # 8. 🗃 테이블 명세서
+이미지 다시 변경
 ![](img/table.PNG)<br/>
 [ 테이블 명세서 ](https://docs.google.com/spreadsheets/d/1HM-mU0-lc_Kd9HSFikO5GXxtWctQNYoIqnbgs6Q8_N0/edit?gid=993473287#gid=993473287)
 
