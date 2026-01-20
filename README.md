@@ -4,6 +4,8 @@
 <img src="https://media.discordapp.net/attachments/1457598301292466433/1463184990685892703/1st_flow_settle_up.001.jpeg?ex=6970e8b6&is=696f9736&hm=4caf11afcebf1b15b1b7fc3e76002b2f26d793451a135f161d582e0ecfba5a07&=&format=webp&width=738&height=554" />
 </p>
 
+---
+
 # 👥 flow 팀원 소개
 
 <table>
