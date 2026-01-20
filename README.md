@@ -105,34 +105,34 @@
 
 ---
 
-# 5. 🧾 요구사항 명세서
+# 4. 🧾 요구사항 명세서
 ![](img/requirements.PNG)<br/>
 [ 요구사항 명세서 ](https://docs.google.com/spreadsheets/d/1t-3yzFlvFUKhRYMtjQxSj4t5rjAZPjR0/edit?gid=1080029165#gid=1080029165)
 
 ---
 
-# 6. 🧵 유스케이스
+# 5. 🧵 유스케이스
 <p align="center">
   <img src="img/usecase.png" />
 </p>
 
 ---
 
-# 7. 🧩 ERD
+# 6. 🧩 ERD
 이미지 다시 변경
 ![](img/flow_erd.png)
 [ ERD ](https://www.erdcloud.com/d/uzGd5MBTRGSqNebu2)
 
 ---
 
-# 8. 🗃 테이블 명세서
+# 7. 🗃 테이블 명세서
 이미지 다시 변경
 ![](img/table.PNG)<br/>
 [ 테이블 명세서 ](https://docs.google.com/spreadsheets/d/1HM-mU0-lc_Kd9HSFikO5GXxtWctQNYoIqnbgs6Q8_N0/edit?gid=993473287#gid=993473287)
 
 ---
 
-# 9. 🗄️ SQL
+# 8. 🗄️ SQL
 
 <details>
     <summary>DDL</summary>
