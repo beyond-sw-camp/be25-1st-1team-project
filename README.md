@@ -192,9 +192,12 @@
 </details>
 
 <details>
-    <summary>Test Case</summary>
-  
-</details>
+  <summary>Test Case</summary>
+  <details>
+      <summary>FR-08-05 : 자금흐름 원장 감사</summary>
+       
+  </details>
+</details> 
 
 ---
 
