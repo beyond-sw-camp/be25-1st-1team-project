@@ -279,11 +279,15 @@
        <img src="img/테스트케이스/FR-06-01c.png" />
   </details>  
 
-    <details>
+  <details>
       <summary>FR-06-02 :  위탁 계좌 자금 갱신 </summary>
-       <img src="img/테스트케이스/FR-06-02a.png" />
-       <img src="img/테스트케이스/FR-06-02b.png" />
-       <img src="img/테스트케이스/FR-06-02c.png" />
+       <img src="img/테스트케이스/FR-06-02a.PNG" /><br>
+       <img src="img/테스트케이스/FR-06-02b.PNG" /><br>
+       <img src="img/테스트케이스/FR-06-02c.PNG" /><br>
+       <img src="img/테스트케이스/FR-06-02d.PNG" /><br>
+       <img src="img/테스트케이스/FR-06-02e.PNG" /><br>
+       <img src="img/테스트케이스/FR-06-02f.PNG" /><br>
+       <img src="img/테스트케이스/FR-06-02g.PNG" />
   </details> 
 
   <details>
@@ -347,13 +351,13 @@
 
 ---
 
-# 11. 📰 시나리오
+# 9. 📰 시나리오
 확정X)<br/>
 ![](img/flo.png)
 
 ---
 
-# 12. 💬 팀회고
+# 10. 💬 팀회고
 
 #### 🦊김진혁
 > 시도하였던 것
