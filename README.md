@@ -1,6 +1,8 @@
 # 🔐 신탁 기반 정산 시스템
 
-
+<p align="center">
+<img src="https://media.discordapp.net/attachments/1457598301292466433/1463184990685892703/1st_flow_settle_up.001.jpeg?ex=6970e8b6&is=696f9736&hm=4caf11afcebf1b15b1b7fc3e76002b2f26d793451a135f161d582e0ecfba5a07&=&format=webp&width=738&height=554" />
+</p>
 
 # 👥 flow 팀원 소개
 
@@ -119,14 +121,12 @@
 ---
 
 # 6. 🧩 ERD
-이미지 다시 변경
 ![](img/flow_erd.png)
 [ ERD ](https://www.erdcloud.com/d/uzGd5MBTRGSqNebu2)
 
 ---
 
 # 7. 🗃 테이블 명세서
-이미지 다시 변경
 ![](img/table.PNG)<br/>
 [ 테이블 명세서 ](https://docs.google.com/spreadsheets/d/1HM-mU0-lc_Kd9HSFikO5GXxtWctQNYoIqnbgs6Q8_N0/edit?gid=993473287#gid=993473287)
 
