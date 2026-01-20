@@ -226,6 +226,28 @@
   </details>
   
   <details>
+      <summary>FR-03-01 :  </summary>
+       <h3>지급해야 할 PG사별 정산 총액 집계</h3>
+       <img src="img/테스트케이스/FR-03-01-01.png" />
+    
+       <h3>PG→본사 입금 원장 기록 저장</h3>  
+       <img src="img/테스트케이스/FR-03-01-02.png" />
+       <img src="img/테스트케이스/FR-03-01-03.png" />
+
+       <h3>본사 계좌 갱신</h3>
+       <img src="img/테스트케이스/FR-03-01-04.png" />
+       <img src="img/테스트케이스/FR-03-01-05.png" />
+
+       <h3>정산 명세 지급 완료 처리</h3>
+       <img src="img/테스트케이스/FR-03-01-06.png" />
+       <img src="img/테스트케이스/FR-03-01-07.png" />
+
+       <h3>정산 주기 지급 완료 처리</h3>
+       <img src="img/테스트케이스/FR-03-01-08.png" />
+       <img src="img/테스트케이스/FR-03-01-09.png" />
+  </details>  
+  
+  <details>
       <summary>FR-04-01 : 본사계좌 데이터 저장 </summary>
        <img src="img/테스트케이스/요구사항 FR-04-01.png" />
     
