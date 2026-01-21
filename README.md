@@ -546,7 +546,75 @@ CREATE TABLE IF NOT EXISTS trust_partner_ledger (
        <img src="img/테스트케이스/FR-09-02a.png" />
        <img src="img/테스트케이스/FR-09-02b.png" />
   </details>  
+
+  <details>
+      <summary>FR-10-01 : 회원 관리 </summary>
+       <img src="img/테스트케이스/FR-10-01 이메일 중복 체크.png" />
+       <img src="img/테스트케이스/FR-10-01 회원가입_사용자 권한 등록VIEWER.png" />
+       <img src="img/테스트케이스/FR-10-01 회원가입.png" />
+  </details>  
+
+  <details>
+      <summary>FR-10-02 : 로그인 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details>  
   
+
+  <details>
+      <summary>FR-10-03 : 로그아웃 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-10-04 : 회원 탈퇴 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-10-05 : 가맹점 등록 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-10-06 : 가맹점 등록 해제 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-11-01 : 사업자 정보 등록 및 조회 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+  
+  <details>
+      <summary>FR-11-02 : 가맹점 계좌 정보 등록 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-11-03 : 결제 대행사 선택 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-11-04 : 사업자 유효성 검증 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details> 
+
+  <details>
+      <summary>FR-12-01 : 정산 내역서 조회 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details>
+
+  <details>
+      <summary>FR-12-02 : 지급 내역서 조회 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details>
+
+  <details>
+      <summary>FR-12-03 : 정산 내역서 이의제기 </summary>
+       <img src="img/테스트케이스/.png" />
+  </details>
+
 </details> 
 
 ---
