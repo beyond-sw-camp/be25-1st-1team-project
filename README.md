@@ -1,7 +1,7 @@
 # 🔐 신탁 기반 정산 시스템
 
 <p align="center">
-<img src="img/main.jpeg" />
+<img src="img/first_img.jpeg" />
 </p>
 
 ---
