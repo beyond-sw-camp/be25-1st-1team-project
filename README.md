@@ -377,8 +377,823 @@ CREATE TABLE IF NOT EXISTS trust_partner_ledger (
 
 <details>
     <summary>DML</summary>
+
+#### FR-01 결제 원천 데이터 저장
+```sql
+-- FR-01-01 결제 원천 데이터 저장	
+INSERT INTO payment (merchant_id, pg_provider_id, pg_tx_id, approved_at, amount, created_at) VALUES
+(1, 1, 'TXN-JAN-01', '2026-01-19 10:00:00', 10000.00, '2026-01-19 10:05:00'),
+(2, 2, 'TXN-JAN-02', '2026-01-19 11:30:00', 55000.00, '2026-01-19 11:35:00'),
+(3, 3, 'TXN-JAN-03', '2026-01-20 01:00:00', 23000.00, '2026-01-20 01:05:00'),
+(4, 4, 'TXN-JAN-04', '2026-01-20 02:20:00', 150000.00, '2026-01-20 02:25:00'),
+(5, 5, 'TXN-JAN-05', '2026-01-20 03:40:00', 42000.00, '2026-01-20 03:45:00'),
+(6, 6, 'TXN-JAN-06', '2026-01-20 04:00:00', 8800.00, '2026-01-20 04:05:00'),
+(7, 7, 'TXN-JAN-07', '2026-01-20 05:15:00', 31000.00, '2026-01-20 05:20:00'),
+(8, 8, 'TXN-JAN-08', '2026-01-20 06:50:00', 12500.00, '2026-01-20 06:55:00'),
+(9, 9, 'TXN-JAN-09', '2026-01-20 07:30:00', 99000.00, '2026-01-20 07:35:00'),
+(10, 10, 'TXN-JAN-10', '2026-01-20 08:45:00', 67000.00, '2026-01-20 08:50:00');
+```
+
+#### FR-02 정산 규칙, 정산 주기, 정산명세 데이터 생성
+```sql
+
+-- FR-02-01 정산 규칙 생성 결제완료 이후 N일 뒤에 정산하는 D+N의 정산 규칙 생성
+INSERT INTO settlement_rule (pg_provider_id, name, delay_days) VALUES
+(1, 'D+1 정산', 1), (2, 'D+3 정산', 3), (3, 'D+7 정산', 7), (4, 'D+2 정산', 2), (5, 'D+5 정산', 5),
+(6, 'D+1 정산', 1), (7, 'D+3 정산', 3), (8, 'D+7 정산', 7), (9, 'D+1 정산', 1), (10, 'D+4 정산', 4);
+
+SELECT sr.settlement_rule_id,
+       pp.`name`,
+       sr.`name`,
+       sr.delay_days
+FROM settlement_rule sr
+JOIN pg_provider pp ON sr.pg_provider_id = pp.pg_provider_id
+;
+```
+
+```sql
+-- FR-02-02 "정산 주기는 가맹점과 카드사/PG 기준으로 생성 정산 주기는 시작일과 종료일을 가짐"
+INSERT INTO settlement_cycle (
+    settlement_cycle_code, 
+    merchant_id, 
+    pg_provider_id, 
+    period_start_date, 
+    period_end_date, 
+    status, 
+    created_at, 
+    updated_at, 
+    expected_settlement_date
+) VALUES
+('CYC-20260120-01', 1, 1, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-21'),
+('CYC-20260120-02', 2, 2, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-23'),
+('CYC-20260120-03', 3, 3, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-27'),
+('CYC-20260120-04', 4, 4, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-22'),
+('CYC-20260120-05', 5, 5, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-25'),
+('CYC-20260120-06', 6, 6, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-21'),
+('CYC-20260120-07', 7, 7, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-23'),
+('CYC-20260120-08', 8, 8, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-27'),
+('CYC-20260120-09', 9, 9, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-21'),
+('CYC-20260120-10', 10, 10, '2026-01-19', '2026-01-20', 'PENDING', '2026-01-20 09:00:00', '2026-01-20 09:30:00', '2026-01-24')
+```
+```sql
+--  FR-02-04 정산 명세 일괄 생성 (영수증 다발 처리)
+INSERT INTO settlement_statement (
+    settlement_cycle_id,
+    settlement_state,
+    settlement_amount,
+    occurred_at,
+    created_at
+)
+SELECT
+    sc.settlement_cycle_id,
+    'REQUESTED',
+    SUM(p.amount),
+    NOW(),
+    NOW()
+FROM settlement_cycle sc
+JOIN payment p ON p.merchant_id = sc.merchant_id
+              AND p.pg_provider_id = sc.pg_provider_id
+WHERE sc.status = 'PENDING' -- 아직 정산되지 않은 모든 주기들을 대상으로 함
+  AND p.approved_at >= sc.period_start_date
+  AND p.approved_at < DATE_ADD(sc.period_end_date, INTERVAL 1 DAY)
+GROUP BY sc.settlement_cycle_id
+```
+```sql
+-- FR-02-05 정산 완료 예정일 계산 및 갱신 "정산 주기 종료일에 D+N을 가산함으로써 가맹점에 대한 실제 지급일을 산출
+-- 갱신된 정산 주기, 정산대금 상태 변경
+
+UPDATE settlement_cycle sc
+JOIN settlement_rule sr ON sc.pg_provider_id = sr.pg_provider_id
+SET 
+    sc.expected_settlement_date = DATE_ADD(sc.period_end_date, INTERVAL sr.delay_days DAY),
+    sc.status = 'REQUESTED',
+    sc.updated_at = NOW()
+WHERE sc.status = 'CALCULATED';
+
+UPDATE settlement_statement ss
+JOIN settlement_cycle sc ON ss.settlement_cycle_id = sc.settlement_cycle_id
+SET ss.settlement_state = 'READY'
+WHERE sc.status = 'REQUESTED' AND ss.settlement_state = 'REQUESTED';
+```
+
+#### FR-03 정산 총액 입금 후 본사 계좌 갱신 	
+```sql
+-- FR-03-01 정산 총액 입금 후 본사 계좌 갱신
+INSERT INTO pg_headquarter_ledger (pg_provider_id, hq_id, amount, deposited_at)
+SELECT
+    x.pg_provider_id,
+    x.hq_id,
+    x.total_amount AS amount,
+    NOW() AS deposited_at
+FROM (
+    SELECT
+        sc.pg_provider_id,
+        h.hq_id,
+        SUM(ss.settlement_amount) AS total_amount
+    FROM settlement_cycle sc
+    JOIN settlement_statement ss ON ss.settlement_cycle_id = sc.settlement_cycle_id
+    JOIN headquarter h ON h.settlement_statement_id = ss.settlement_statement_id
+    WHERE sc.expected_settlement_date = CURRENT_DATE
+    GROUP BY sc.pg_provider_id, h.hq_id
+) x
+WHERE x.total_amount <> 0
+  AND NOT EXISTS (
+      SELECT 1
+      FROM pg_headquarter_ledger l
+      WHERE l.pg_provider_id = x.pg_provider_id
+        AND l.hq_id = x.hq_id
+        AND DATE(l.deposited_at) = CURRENT_DATE
+        AND l.amount = x.total_amount
+  );
   
-</details>
+UPDATE headquarter h
+JOIN settlement_statement ss ON ss.settlement_statement_id = h.settlement_statement_id
+JOIN settlement_cycle sc ON sc.settlement_cycle_id = ss.settlement_cycle_id
+JOIN (
+    SELECT
+        l.hq_id,
+        SUM(l.amount) AS deposited_total
+    FROM pg_headquarter_ledger l
+    WHERE DATE(l.deposited_at) = CURRENT_DATE
+    GROUP BY l.hq_id
+) d ON d.hq_id = h.hq_id
+SET
+    h.head_office_account_amount = COALESCE(h.head_office_account_amount, 0) + d.deposited_total,
+    h.paid_at = CURRENT_DATE,
+    h.updated_at = NOW()
+WHERE
+    sc.expected_settlement_date = CURRENT_DATE
+    AND (h.paid_at IS NULL OR h.paid_at < CURRENT_DATE);
+    
+UPDATE settlement_statement ss
+JOIN settlement_cycle sc ON sc.settlement_cycle_id = ss.settlement_cycle_id
+SET ss.settlement_state = 'COMPLETED',
+    ss.occurred_at = NOW()
+WHERE sc.expected_settlement_date = CURRENT_DATE
+  AND (ss.settlement_state IS NULL OR ss.settlement_state <> 'SETTLED')
+  AND EXISTS (
+      SELECT 1
+      FROM headquarter h2
+      JOIN pg_headquarter_ledger l2 ON l2.hq_id = h2.hq_id
+      WHERE h2.settlement_statement_id = ss.settlement_statement_id
+        AND DATE(l2.deposited_at) = CURRENT_DATE
+  );
+  
+UPDATE settlement_cycle sc
+SET sc.status = 'SETTLED',
+    sc.updated_at = NOW()
+WHERE sc.expected_settlement_date = CURRENT_DATE
+  AND (sc.status IS NULL OR sc.status <> 'SETTLED')
+  AND EXISTS (
+      SELECT 1
+      FROM settlement_statement ss
+      JOIN headquarter h
+        ON h.settlement_statement_id = ss.settlement_statement_id
+      JOIN pg_headquarter_ledger l
+        ON l.hq_id = h.hq_id
+      WHERE ss.settlement_cycle_id = sc.settlement_cycle_id
+        AND DATE(l.deposited_at) = CURRENT_DATE
+  );
+```
+#### FR-04 계좌 데이터 저장	
+```sql
+-- FR-04-01 본사계좌 데이터 저장
+INSERT INTO headquarter(settlement_statement_id, distribution_rule_id, merchant_id, trust_account_id, total_fee, hq_office_account_number, bank_id) VALUES
+(1, 1, 1, 1, 500.00, 'HQ-001-1234', 2),
+(2, 2, 2, 2, 2750.00, 'HQ-001-1234', 2),
+(3, 3, 3, 3, 1150.00, 'HQ-001-1234', 2),
+(4, 4, 4, 4, 7500.00, 'HQ-001-1234', 2),
+(5, 5, 5, 5, 2100.00, 'HQ-001-1234', 2),
+(6, 6, 6, 6, 440.00, 'HQ-001-1234', 2),
+(7, 7, 7, 7, 1550.00, 'HQ-001-1234', 2),
+(8, 8, 8, 8, 625.00, 'HQ-001-1234', 2),
+(9, 9, 9, 9, 4950.00, 'HQ-001-1234', 2),
+(10, 10, 10, 10, 3350.00, 'HQ-001-1234', 2);
+```
+```sql
+-- FR-04-02 위탁계좌 데이터 저장
+INSERT INTO trust_account (merchant_id, bank_id, account_no_en, account_holder, status) VALUES
+(1, 1, '110-123-456', '위탁_아르카나', 'ACTIVE'),
+(2, 2, '220-234-567', '위탁_랩', 'ACTIVE'),
+(3, 3, '330-345-678', '위탁_식당', 'ACTIVE'),
+(4, 4, '440-456-789', '위탁_학원', 'ACTIVE'),
+(5, 5, '550-567-890', '위탁_패션', 'ACTIVE'),
+(6, 6, '660-678-901', '위탁_마트', 'ACTIVE'),
+(7, 7, '770-789-012', '위탁_플라워', 'ACTIVE'),
+(8, 8, '880-890-123', '위탁_서점', 'ACTIVE'),
+(9, 9, '990-901-234', '위탁_짐', 'ACTIVE'),
+(10, 10, '000-012-345', '위탁_베이커리', 'ACTIVE');
+```
+```sql
+-- FR-04-03 가맹점계좌 데이터 저장
+INSERT INTO merchant_bank_account (merchant_id, bank_id, account_no_en, balance_amount, account_holder_name, verified_at, created_at) VALUES
+(1, 1, '100-001-001', 10000, '김철수', '2025-01-16 00:00:00', '2025-01-16 00:00:00'),
+(2, 2, '100-001-002', 25000, '이영희', '2025-02-21 00:00:00', '2025-02-21 00:00:00'),
+(3, 3, '100-001-003', 5000, '박지민', '2025-03-06 00:00:00', '2025-03-06 00:00:00'),
+(4, 4, '100-001-004', 120000, '최승우', '2025-04-13 00:00:00', '2025-04-13 00:00:00'),
+(5, 5, '100-001-005', 0, '정다은', '2025-05-23 00:00:00', '2025-05-23 00:00:00'),
+(6, 6, '100-001-006', 450000, '강민호', '2025-07-01 00:00:00', '2025-07-01 00:00:00'),
+(7, 7, '100-001-007', 89000, '윤서연', '2025-07-19 00:00:00', '2025-07-19 00:00:00'),
+(8, 8, '100-001-008', 34000, '임재희', '2025-08-06 00:00:00', '2025-08-06 00:00:00'),
+(9, 9, '100-001-009', 210000, '한준서', '2025-09-15 00:00:00', '2025-09-15 00:00:00'),
+(10, 10, '100-001-010', 56000, '오민지', '2025-10-26 00:00:00', '2025-10-26 00:00:00');
+```
+#### FR-05 본사 계좌 자금 관리	
+```sql
+-- FR-05-01 본사 수수료 계산 및 순정산금 저장
+
+INSERT INTO headquarter (
+	 hq_id,
+	 settlement_statement_id,
+	 distribution_rule_id,merchant_id, trust_account_id,
+    total_fee, total_net_amount, 
+    total_payout_amount, head_office_account_amount,
+    paid_at, created_at, updated_at, hq_office_account_number, bank_id
+)
+SELECT  
+	 10,
+    ss.settlement_statement_id,
+    dr.distribution_rule_id,
+    sc.merchant_id,
+    ta.trust_account_id,
+    
+    -- [수수료] 매출액의 5%
+    (ss.settlement_amount * 0.05),
+    
+    -- [순정산금] 매출액 - 수수료
+    (ss.settlement_amount - (ss.settlement_amount * 0.05)),
+    
+    0, 0, 
+    CURDATE(), NOW(), NOW(), 'HQ-001-1234', 2
+FROM settlement_statement ss
+JOIN settlement_cycle sc ON ss.settlement_cycle_id = sc.settlement_cycle_id
+JOIN trust_account ta ON sc.merchant_id = ta.merchant_id
+JOIN distribution_rule dr ON dr.distribution_rule_id = 10 -- 분배 규칙 ID 10 
+WHERE ss.settlement_statement_id = 10;
+```
+```sql
+-- FR-05-02 순정산금 분배 규칙 적용
+
+UPDATE headquarter h
+JOIN distribution_rule dr ON h.distribution_rule_id = dr.distribution_rule_id
+SET 
+    -- [가맹점] 순정산금 * 위탁비율
+    h.total_payout_amount = (h.total_net_amount * (dr.entrusted_ratio / 100)),
+    
+    -- [본사] 순정산금 * 본사비율 
+    h.head_office_account_amount = (h.total_net_amount * (dr.hq_ratio / 100)),
+    
+    -- 수정일시 갱신
+    h.updated_at = NOW()
+WHERE h.hq_id = 10;
+```
+```sql
+-- FR-05-03  본사 계좌 자금 갱신
+
+UPDATE settlement_cycle 
+SET 
+    status = 'SETTLED', 
+    updated_at = expected_settlement_date 
+WHERE settlement_cycle_id = 10;
+
+UPDATE headquarter h
+JOIN settlement_cycle sc ON h.settlement_statement_id = sc.settlement_cycle_id
+SET 
+    h.paid_at = sc.expected_settlement_date, -- 지급일을 예정일(11/14)로 확정
+    h.updated_at = CONCAT(sc.expected_settlement_date, ' 10:00:00') -- 수정일 오전 10시
+WHERE h.hq_id = 10;
+
+-- 잔액 갱신 (실제 지급액만큼 잔액 증가)
+UPDATE trust_account ta
+JOIN headquarter h ON ta.trust_account_id = h.trust_account_id
+JOIN settlement_cycle sc ON h.settlement_statement_id = sc.settlement_cycle_id
+SET 
+    ta.balance_amount = ta.balance_amount + h.total_payout_amount,
+    ta.last_synced_at = CONCAT(sc.expected_settlement_date, ' 10:00:00'),
+    ta.updated_at = CONCAT(sc.expected_settlement_date, ' 10:00:00')
+WHERE h.hq_id = 10;
+```
+#### FR-06 위탁 계좌 자금 관리	
+```sql
+-- FR-06-01 위탁 계좌 자금 갱신
+
+UPDATE settlement_cycle 
+SET 
+    status = 'SETTLED', 
+    updated_at = expected_settlement_date 
+WHERE settlement_cycle_id = 10;
+
+UPDATE headquarter h
+JOIN settlement_cycle sc ON h.settlement_statement_id = sc.settlement_cycle_id
+SET 
+    h.paid_at = sc.expected_settlement_date, -- 지급일을 예정일(11/14)로 확정
+    h.updated_at = CONCAT(sc.expected_settlement_date, ' 10:00:00') -- 수정일 오전 10시
+WHERE h.hq_id = 10;
+
+-- 3. 위탁 계좌(trust_account) 잔액 갱신 (실제 지급액만큼 잔액 증가)
+UPDATE trust_account ta
+JOIN headquarter h ON ta.trust_account_id = h.trust_account_id
+JOIN settlement_cycle sc ON h.settlement_statement_id = sc.settlement_cycle_id
+SET 
+    ta.balance_amount = ta.balance_amount + h.total_payout_amount,
+    ta.last_synced_at = CONCAT(sc.expected_settlement_date, ' 10:00:00'),
+    ta.updated_at = CONCAT(sc.expected_settlement_date, ' 10:00:00')
+WHERE h.hq_id = 10;
+
+--
+-- 원장 데이터에 없는 위탁계좌 id조회
+SELECT ta.trust_account_id,
+       ta.balance_amount
+FROM trust_account ta
+LEFT JOIN trust_partner_ledger l
+       ON l.trust_account_id = ta.trust_account_id
+WHERE l.trust_account_id IS NULL
+  AND ta.balance_amount > 0;
+  
+-- 1. 위탁계좌 -
+UPDATE trust_account ta
+LEFT JOIN trust_partner_ledger l
+  ON l.trust_account_id = ta.trust_account_id
+SET ta.balance_amount = 0,
+    ta.updated_at = NOW()
+WHERE l.trust_account_id IS NULL
+  AND ta.balance_amount > 0;
+
+-- 2. 가맹점 +
+UPDATE merchant_bank_account mba
+JOIN trust_account ta
+  ON ta.merchant_id = mba.merchant_id
+LEFT JOIN trust_partner_ledger l
+  ON l.trust_account_id = ta.trust_account_id
+SET mba.balance_amount = mba.balance_amount + ta.balance_amount,
+    mba.verified_at = NOW()
+WHERE l.trust_account_id IS NULL
+  AND ta.balance_amount > 0;
+```
+#### FR-07 가맹점 계좌 자금 관리	
+```sql
+-- FR-07-01 가맹점 계좌 자금 관리
+-- 1) 지급되지 않은 가맹점 ID 조회
+SELECT
+  h.merchant_id,
+  SUM(h.total_payout_amount) AS add_amount
+FROM headquarter h
+WHERE h.paid_at IS NOT NULL
+  AND h.total_payout_amount > 0
+  AND NOT EXISTS (
+    SELECT 1
+    FROM headquarter_merchant_member_ledger l
+    WHERE l.hq_id = h.hq_id
+      AND l.merchant_id = h.merchant_id
+      AND l.amount = h.total_payout_amount
+  )
+GROUP BY h.merchant_id;
+
+
+-- 1) 가맹점 잔액 +
+UPDATE merchant_bank_account mba
+JOIN (
+  SELECT h.merchant_id, SUM(h.total_payout_amount) AS add_amount
+  FROM headquarter h
+  WHERE h.paid_at IS NOT NULL
+    AND h.total_payout_amount > 0
+    AND NOT EXISTS (
+      SELECT 1
+      FROM headquarter_merchant_member_ledger l
+      WHERE l.hq_id = h.hq_id
+        AND l.merchant_id = h.merchant_id
+        AND l.amount = h.total_payout_amount
+    )
+  GROUP BY h.merchant_id
+) x ON x.merchant_id = mba.merchant_id
+SET mba.balance_amount = mba.balance_amount + x.add_amount
+WHERE mba.account_status = 'ACTIVE';
+
+-- 2) 본사 잔액 -
+UPDATE headquarter h
+SET h.head_office_account_amount = h.head_office_account_amount - h.total_payout_amount
+WHERE h.paid_at IS NOT NULL
+  AND h.total_payout_amount > 0
+  AND h.head_office_account_amount >= h.total_payout_amount
+  AND NOT EXISTS (
+    SELECT 1
+    FROM headquarter_merchant_member_ledger l
+    WHERE l.hq_id = h.hq_id
+      AND l.merchant_id = h.merchant_id
+      AND l.amount = h.total_payout_amount
+  );
+
+SELECT * 
+FROM payment;
+```
+
+#### FR-08 자금흐름 원장 관리 / 감사	
+```sql
+-- FR-08-01 PG사 - 본사 원장 데이터 저장
+INSERT INTO pg_headquarter_ledger (pg_provider_id, hq_id, amount, deposited_at) VALUES
+(1, 1, 10000.00, '2026-01-20 09:30:00'),
+(2, 2, 55000.00, '2026-01-20 09:30:00'),
+(3, 3, 23000.00, '2026-01-20 09:30:00'),
+(4, 4, 150000.00, '2026-01-20 09:30:00'),
+(5, 5, 42000.00, '2026-01-20 09:30:00'),
+(6, 6, 8800.00, '2026-01-20 09:30:00'),
+(7, 7, 31000.00, '2026-01-20 09:30:00');
+```
+```sql
+-- FR-08-02 본사 - 위탁계좌 원장 데이터 저장
+INSERT INTO headquarter_trust_ledger (hq_id, trust_account_id, amount, deposited_at) VALUES
+(1, 1, 4750.00, '2026-01-20 10:05:00'),
+(2, 2, 20900.00, '2026-01-20 10:05:00'),
+(3, 3, 6555.00, '2026-01-20 10:05:00'),
+(4, 4, 28500.00, '2026-01-20 10:05:00'),
+(5, 5, 17955.00, '2026-01-20 10:05:00'),
+(6, 6, 2926.00, '2026-01-20 10:05:00'),
+(7, 7, 7362.50, '2026-01-20 10:05:00');
+```
+```sql
+-- FR-08-03 본사 - 가맹점, 회원 원장 데이터 저장
+INSERT INTO headquarter_merchant_member_ledger (hq_id, merchant_id, amount, deposited_at) VALUES
+(1, 1, 4750.00, '2026-01-20 10:00:00'),
+(2, 2, 31350.00, '2026-01-20 10:00:00'),
+(3, 3, 15295.00, '2026-01-20 10:00:00'),
+(4, 4, 114000.00, '2026-01-20 10:00:00'),
+(5, 5, 21945.00, '2026-01-20 10:00:00'),
+(6, 6, 5434.00, '2026-01-20 10:00:00'),
+(7, 7, 22087.50, '2026-01-20 10:00:00');
+```
+```sql
+-- FR-08-04 위탁계좌 - 가맹점 원장 데이터 저장
+INSERT INTO trust_partner_ledger (trust_account_id, merchant_id, amount, deposited_at) VALUES
+(1, 1, 4750.00, '2026-01-20 10:30:00'),
+(2, 2, 20900.00, '2026-01-20 10:30:00'),
+(3, 3, 6555.00, '2026-01-20 10:30:00'),
+(4, 4, 28500.00, '2026-01-20 10:30:00'),
+(5, 5, 17955.00, '2026-01-20 10:30:00'),
+(6, 6, 2926.00, '2026-01-20 10:30:00'),
+(7, 7, 7362.50, '2026-01-20 10:30:00');
+```
+```sql
+-- FR-08-05 자금흐름 원장 감사
+-- 가맹점 기준 전체 자금 흐름 타임라인 감사
+SELECT
+  flow_type,
+  amount,
+  deposited_at
+FROM (
+  SELECT
+    'HQ_TO_MERCHANT' AS flow_type,
+    amount,
+    deposited_at
+  FROM headquarter_merchant_member_ledger
+  WHERE merchant_id = 100
+
+  UNION ALL
+
+  SELECT
+    'TRUST_TO_MERCHANT' AS flow_type,
+    amount,
+    deposited_at
+  FROM trust_partner_ledger
+  WHERE merchant_id = 100
+) t
+ORDER BY deposited_at ASC;
+
+-- 본사 기준 들어온 돈 vs 나간 돈 감사
+SELECT
+  h.hq_id,
+  COALESCE(SUM(pgh.amount), 0) AS total_pg_in,
+  COALESCE(SUM(hm.amount), 0) AS total_hq_to_merchant
+
+FROM headquarter h
+LEFT JOIN pg_headquarter_ledger pgh
+  ON pgh.hq_id = h.hq_id
+LEFT JOIN headquarter_merchant_member_ledger hm
+  ON hm.hq_id = h.hq_id
+WHERE h.hq_id = 300
+GROUP BY h.hq_id;
+
+-- 위탁계좌 기준 감사
+SELECT
+  t.trust_account_id,
+  COALESCE(SUM(ht.amount), 0) AS total_hq_to_trust,
+  COALESCE(SUM(tp.amount), 0) AS total_trust_to_merchant
+
+FROM trust_account t
+LEFT JOIN headquarter_trust_ledger ht
+  ON ht.trust_account_id = t.trust_account_id
+LEFT JOIN trust_partner_ledger tp
+  ON tp.trust_account_id = t.trust_account_id
+WHERE t.trust_account_id = 200
+GROUP BY t.trust_account_id;
+
+-- 정산 1건(hq_id) 단위 정합성 감사 
+SELECT
+  h.hq_id,
+  ss.settlement_amount,
+  h.total_net_amount,
+
+  COALESCE(SUM(hm.amount), 0)
+  + COALESCE(SUM(tp.amount), 0) AS actual_payout_amount
+
+FROM headquarter h
+JOIN settlement_statement ss
+  ON ss.settlement_statement_id = h.status_statement_id
+
+LEFT JOIN headquarter_merchant_member_ledger hm
+  ON hm.hq_id = h.hq_id
+
+LEFT JOIN trust_partner_ledger tp
+  ON tp.merchant_id = h.merchant_id
+
+WHERE h.hq_id = 300
+GROUP BY h.hq_id, ss.settlement_amount, h.total_net_amount;
+```
+#### FR-09 카드사/PG 정산 규칙 관리	
+```sql
+-- FR-09-01 카드사/PG 등록
+
+INSERT INTO pg_provider (name, bank_code) 
+VALUES ('Global Pay', '004');
+```
+```sql
+-- FR-09-02 정산 규칙 관리
+
+INSERT INTO settlement_rule (
+    pg_provider_id, 
+    name, 
+    delay_days
+) VALUES (
+    (SELECT pg_provider_id FROM pg_provider WHERE name = 'Global Pay'), 
+    'D+7 정산', 
+    7
+);
+
+UPDATE settlement_rule
+SET 
+    delay_days = 3,
+    name = 'D+3 정산'
+WHERE 
+    pg_provider_id = (SELECT pg_provider_id FROM pg_provider WHERE name = 'Global Pay');
+```
+#### FR-10 회원 관리
+```sql
+-- FR-10-01 회원가입
+SELECT NVL2(
+	(SELECT user_id
+	FROM service_user
+	WHERE email = 'leesunsin@gmail.com'
+	LIMIT 1),
+	'중복된 아이디가 존재합니다.',
+	'회원 가입 가능'
+) AS '중복 체크';
+
+INSERT INTO service_user (user_name, email, phone_num, password_hash)
+VALUES ('이순신', 'leesunsin@gmail.com', '010-1234-5678', 'j665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3');
+```
+```sql
+-- FR-10-02 로그인
+SET @user_id = (
+	SELECT user_id
+	FROM service_user
+	WHERE email = 'leesunsin@gmail.com' 
+	LIMIT 1
+);
+```
+```sql
+-- FR-10-03 로그 아웃
+SET @user_id = NULL;
+SET @user_name = NULL;
+SET @merchant_id = NULL;
+SET @pg_provider_id = NULL;
+SET @settlement_statement_id = NULL;
+SET @merchant_bank_account_num = NULL;
+SET @merchant_balance_amount = NULL;
+SET @trust_bank_account_num = NULL;
+SET @trust_balance_amount = NULL;
+```
+```sql
+-- FR-10-04 회원 탈퇴
+SET @merchant_id = 1;
+
+SELECT
+    CASE
+        WHEN NOT EXISTS (
+            SELECT 1
+            FROM settlement_cycle
+            WHERE merchant_id = @merchant_id
+              AND status <> 'SETTLED'
+        )
+        THEN '탈퇴 가능'
+        ELSE '탈퇴 불가능'
+    END AS '탈퇴 가능 여부';
+    
+    UPDATE merchant
+SET status = 'DISABLED'
+WHERE merchant_id = @merchant_id;
+
+UPDATE merchant_bank_account
+SET account_status = 'INACTIVE'
+WHERE merchant_id = @merchant_id;
+
+UPDATE trust_account
+SET `status` = 'INACTIVE'
+WHERE merchant_id = @merchant_id;
+```
+```sql
+-- FR-10-06 가맹점 등록 해제
+SET @merchant_id = 3;
+
+UPDATE merchant
+SET status = 'DISABLED'
+WHERE merchant_id = @merchant_id;
+
+UPDATE merchant_bank_account
+SET account_status = 'INACTIVE'
+WHERE merchant_id = @merchant_id;
+
+UPDATE trust_account
+SET `status` = 'INACTIVE'
+WHERE merchant_id = @merchant_id;
+```
+
+#### FR-11 가맹점 관리	
+```sql
+-- FR-11-01 사업자 정보 등록 및 조회
+SELECT user_role AS '가맹점에 대한 사용자 권한'
+FROM merchant_user_role
+WHERE merchant_id = @merchant_id
+  AND user_id = @user_id
+  AND user_role = 'OWNER'
+LIMIT 1;
+
+SET @user_name = (
+	SELECT user_name
+	FROM service_user
+	WHERE user_id = @user_id
+	LIMIT 1
+);
+```
+```sql
+-- FR-11-02 가맹점 계좌 정보 등록
+UPDATE merchant_user_role
+SET merchant_id = @merchant_id,
+	 user_role = 'OWNER'
+WHERE user_id = @user_id;
+
+SET @user_name = (
+	SELECT user_name
+	FROM service_user
+	WHERE user_id = @user_id
+	LIMIT 1
+);
+
+INSERT INTO merchant_bank_account (
+   merchant_id,
+   bank_id,
+   balance_amount,
+   account_no_en,
+   account_holder_name
+)
+VALUES (
+   @merchant_id,
+   6,
+   0.0,
+   '123456-01-615350',
+   @user_name
+);
+```
+```sql
+-- FR-11-03 결제 대행사 선택
+SELECT pg_provider_id
+	INTO @pg_provider_id
+FROM pg_provider
+WHERE `name` = 'KG이니시스'
+LIMIT 1;
+
+INSERT INTO settlement_cycle (
+    settlement_cycle_code,
+    merchant_id,
+    pg_provider_id,
+    created_at
+) VALUES (
+    'TEMP',
+    @merchant_id,
+    @pg_provider_id,
+    NOW()
+);
+
+SET @settlement_cycle_id = LAST_INSERT_ID();
+
+UPDATE settlement_cycle
+SET settlement_cycle_code = CONCAT(
+    'CYC-',
+    DATE_FORMAT(created_at, '%Y-%m-%d'),
+    '-',
+    LPAD(@settlement_cycle_id, 3, '0')
+)
+WHERE settlement_cycle_id = @settlement_cycle_id;
+
+```
+```sql
+-- FR-11-04 사업자 유효성 검증
+SELECT CASE
+		 	WHEN `status` = 'ACTIVE' THEN '활성화'
+		 	WHEN `status` = 'INACTIVE' THEN '비활성화'
+		 	WHEN `status` = 'DISABLED' THEN '연결 해제'
+		 	ELSE '알 수 없음'
+		 END AS '사업자 유효성'
+FROM merchant;
+
+```
+#### FR-12 정산 관리	
+```sql
+-- FR-12-01 정산 내역서 조회
+SET @merchant_id = 2;
+
+SELECT su.user_name
+	INTO @owner_user_name
+FROM service_user su
+INNER JOIN merchant_user_role mur
+	ON su.user_id = mur.user_id
+WHERE mur.user_role = 'OWNER'
+	AND mur.merchant_id = @merchant_id;
+	
+SELECT  m.business_name AS '상호명',
+        pp.`name` AS 'PG사',
+        @owner_user_name AS '대표자명',
+        m.business_no AS '사업자 번호',
+        sc.settlement_cycle_code AS '정산 코드',
+        sc.period_start_date AS '정산 범위 시작일',
+        sc.period_end_date AS '정산 범위 종료일',
+        ss.settlement_amount AS '정산 총액',
+        sc.created_at AS '정산 내역 생성일',
+        sc.expected_settlement_date AS '정산 예정일'
+FROM settlement_cycle sc
+INNER JOIN settlement_statement ss
+    ON sc.settlement_cycle_id = ss.settlement_cycle_id
+INNER JOIN merchant m
+    ON m.merchant_id = sc.merchant_id
+INNER JOIN pg_provider pp
+    ON pp.pg_provider_id = sc.pg_provider_id
+INNER JOIN merchant_user_role mur
+    ON mur.merchant_id = m.merchant_id
+   AND mur.user_role = 'OWNER'
+WHERE sc.`status` = 'SETTLED'
+  AND m.merchant_id = @merchant_id;
+```
+```sql
+-- FR-12-02 지급 내역서 조회
+SELECT 
+	CONCAT_WS(' ', bt.bank_name, mba.account_no_en),
+	CONCAT(FORMAT(mba.balance_amount, 0), '원')
+	INTO @merchant_bank_account_num,
+		  @merchant_balance_amount
+FROM merchant_bank_account mba
+INNER JOIN bank bt
+	ON mba.bank_id = bt.bank_id
+WHERE mba.merchant_id = @merchant_id;
+
+SELECT 
+	CONCAT_WS(' ', bt.bank_name, ta.account_no_en),
+	CONCAT(FORMAT(ta.balance_amount, 0), '원')
+	INTO @trust_bank_account_num,
+		  @trust_balance_amount
+FROM trust_account ta
+INNER JOIN bank bt
+	ON ta.bank_id = bt.bank_id
+WHERE ta.merchant_id = @merchant_id;
+
+SELECT @owner_user_name AS '대표자명',
+		 @business_no AS  '사업자번호',
+		 @settlement_cycle_code AS '지급 건 식별자',
+		 @pg_provider_id AS 'PG사',
+	    @settlement_period AS '정산 기간',
+	    CONCAT(FORMAT(hq.total_net_amount, 0), '원') AS '순정산금',
+	    CONCAT(FORMAT(hq.total_fee , 0), '원') AS '수수료',
+	    @trust_bank_account_num '위탁 계좌 번호',
+		 @trust_balance_amount AS '위탁 계좌 잔액',
+		 @merchant_bank_account_num AS '가맹점 계좌 번호',
+	    @merchant_balance_amount AS '가맹점 계좌 잔액',
+	    CONCAT(FORMAT(hq.total_payout_amount , 0), '원') AS '총 지급 금액',
+	    hq.paid_at AS '지급 완료일'
+FROM headquarter hq
+WHERE hq.settlement_statement_id = @settlement_statement_id;
+
+```
+```sql
+-- FR-12-03 정산 내역서 이의 제기
+SET @merchant_id = 5;
+
+SELECT `status`
+FROM settlement_cycle
+WHERE merchant_id = @merchant_id;
+
+UPDATE settlement_cycle
+SET `status` = 'FAILED'
+WHERE merchant_id = @merchant_id;
+
+```
+</details> 
 
 <details>
   <summary>Test Case</summary>
