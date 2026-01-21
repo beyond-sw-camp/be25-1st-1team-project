@@ -556,63 +556,97 @@ CREATE TABLE IF NOT EXISTS trust_partner_ledger (
 
   <details>
       <summary>FR-10-02 : 로그인 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-10-02 로그인_@user_id 설정.png" />
   </details>  
   
 
   <details>
       <summary>FR-10-03 : 로그아웃 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-10-03 로그 아웃.png" />
   </details> 
 
   <details>
       <summary>FR-10-04 : 회원 탈퇴 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 회원 선택_불가능.png" />
+       <img src="img/테스트케이스/FR-10-04 탈퇴 가능 여부_불가능.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 회원 선택_가능.png" />
+       <img src="img/테스트케이스/FR-10-04 탈퇴 가능 여부_가능.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 가맹점 계좌 상태 변경_1.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 가맹점 계좌 상태 변경_2.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 가맹점 상태 변경_1.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 가맹점 상태 변경_2.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 위탁 계좌 상태 변경_1.png" />
+       <img src="img/테스트케이스/FR-10-04 회원탈퇴 위탁 계좌 상태 변경_2.png" />
   </details> 
 
   <details>
       <summary>FR-10-05 : 가맹점 등록 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-10-05 가맹점 중복체크.png" />
+       <img src="img/테스트케이스/FR-10-05 가맹점 등록.png" />
+       <img src="img/테스트케이스/FR-10-05 가맹점 사용자 권한 설정.png" />
   </details> 
 
   <details>
       <summary>FR-10-06 : 가맹점 등록 해제 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 등록 해제 가맹점 선택.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 가맹점 계좌 상태 변경_1.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 가맹점 계좌 상태 변경_2.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 위탁 계좌 상태 변경_1.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 위탁 계좌 상태 변경_2.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 가맹점 등록 상태 변경_1.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 가맹점 등록 상태 변경_2.png" />
+       <img src="img/테스트케이스/FR-10-06 가맹점 해제 사업자 유효성 검증.png" />
   </details> 
 
   <details>
       <summary>FR-11-01 : 사업자 정보 등록 및 조회 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-11-01 대표자 조회.png" />
+       <img src="img/테스트케이스/FR-11-01 대표자명 조회.png" />
+       <img src="img/테스트케이스/FR-11-01 사업자 번호 중복 체크.png" />
   </details> 
   
   <details>
       <summary>FR-11-02 : 가맹점 계좌 정보 등록 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-11-02 예금주명 대표자명 일치 여부.png" />
+       <img src="img/테스트케이스/FR-11-02 가맹점 계좌 등록.png" />
   </details> 
 
   <details>
       <summary>FR-11-03 : 결제 대행사 선택 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-11-03 PG사 선택_PG사 조회.png" />
+       <img src="img/테스트케이스/FR-11-03 PG사 선택_새로운 정산 주기 생성.png" />
+       <img src="img/테스트케이스/FR-11-03 PG사 선택_정산 주기 코드 형식화.png" />
   </details> 
 
   <details>
       <summary>FR-11-04 : 사업자 유효성 검증 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-11-04 사업자 유효성 검증.png" />
   </details> 
 
   <details>
       <summary>FR-12-01 : 정산 내역서 조회 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-12-01 정산 내역서 조회 @merchant_id 설정.png" />
+       <img src="img/테스트케이스/FR-12-01 정산 내역서 조회_대표자명 조회.png" />
+       <img src="img/테스트케이스/FR-12-01 정산 내역서 조회.png" />
   </details>
 
   <details>
       <summary>FR-12-02 : 지급 내역서 조회 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-12-02 지급 내역 데이터 @merchant_id 설정.pn" />
+       <img src="img/테스트케이스/FR-12-02 지급 내역 데이터_사업자 번호 조회.png" />
+       <img src="img/테스트케이스/FR-12-02 지급 내역 데이터_위탁 계좌 조회.png" />
+       <img src="img/테스트케이스/FR-12-02 지급 내역 데이터_정산 주기 데이터 조회.png" />
+       <img src="img/테스트케이스/FR-12-02 지급 내역 데이터_지급 계좌 조회.png" />
+       <img src="img/테스트케이스/FR-12-02 지급 내역서 조회.png" />    
   </details>
 
   <details>
       <summary>FR-12-03 : 정산 내역서 이의제기 </summary>
-       <img src="img/테스트케이스/.png" />
+       <img src="img/테스트케이스/FR-12-03 정산 내역서 이의 제기 @merchant_id 설정.png
+" />
+       <img src="img/테스트케이스/FR-12-03 정산 내역서 이의 제기_정산 주기 상태 변경1.png
+" />
+       <img src="img/테스트케이스/FR-12-03 정산 내역서 이의 제기_정산 주기 상태 변경2.png" />
   </details>
 
 </details> 
@@ -653,15 +687,11 @@ CREATE TABLE IF NOT EXISTS trust_partner_ledger (
 #### 🐑양준석
 > 시도하였던 것
 
-플랫폼이 없는 시스템에서 DB만 설계하고 쿼리문을 돌려보는 프로젝트는 처음 진행해 보았습니다. 실질적으로 비즈니스시스템이 구현된 게 아니기 때문에 더미데이터를 이용해 API가 실행됐다고 가정하고 쿼리문을 돌리기를 시도했습니다. 시점마다 들어오는 데이터가 다르다 보니깐 각각의 쿼리문 작동방식을 이해하는데에 크게 도움이 된 것 같습니다.
 
 > 좋았던 점
 
-프로젝트를 참여할 때에 저는 프로젝트 진행 흐름을 따라가며 맡은 부분만 중요하게 생각하고 진행했습니다. 하지만 이번 프로젝트에서는 전체적인 흐름을 파악하며 팀원들이 맡은 부분들을 중간단계에 검수하면서 프로젝트 진행도를 확인하고 그 행동으로 인해 팀원들이 어려워하는 부분에 도움을 줄 수 있는 팀원이 될 수 있어서 좋았습니다.  
 
 > 아쉬웠던 점
-
-프로젝트 주제를 신탁 기반 정산 시스템으로 선정하여 해당 도메인 분석과 시스템 설계에 큰 어려움을 겪었습니다. 이해하기 어려운 부분도 있었고 개념은 이해되었지만 시스템적으로 문제가 되는 부분도 발생하여 DB설계 자체를 명세 기준이 아닌 자금이라는 임의의 값을 집어넣어 직관적으로 구현하였습니다. 다음에 비슷한 시스템을 구현하게 된다면 실제로 사용되는 시스템과 거의 동일하게 구현하고 싶다고 생각했습니다.
 
 #### 🥔이진
 > 시도하였던 것
